@@ -95,7 +95,6 @@ module "network" {
   source     = "github.com/avaloqcloud/acf_res_net"
   depends_on = [module.configuration]# module.resident] #module.encryption,
   # providers = {oci = oci.service}
-  for_each  = {for segment in local.segments : segment.name => segment}
 
   settings = {
     compartment_id    = module.configuration.oci_core_vcn.segment.compartment_id
