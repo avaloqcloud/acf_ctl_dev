@@ -95,14 +95,15 @@ module "network" {
   source     = "github.com/avaloqcloud/acf_res_net"
   depends_on = [module.configuration]# module.resident] #module.encryption,
   # providers = {oci = oci.service}
-  # for_each  = {for zone in local.zones : zone.name => zone}
+  for_each  = {for segment in local.segments : segment.name => segment}
 
   settings = {
-    compartment_id    = module.configuration.oci_core_vcn.zone_private.compartment_id
-    name              = module.configuration.oci_core_vcn.zone_private.name
-    description       = module.configuration.oci_core_vcn.zone_private.description
-    cidr_blocks       = module.configuration.oci_core_vcn.zone_private.cidr_blocks
+    compartment_id    = module.configuration.oci_core_vcn.segment.compartment_id
+    name              = module.configuration.oci_core_vcn.segment.name
+    description       = module.configuration.oci_core_vcn.segment.description
+    cidr_blocks       = module.configuration.oci_core_vcn.segment.cidr_blocks
   }
+  network   = module.configuration.network[each.key]
   # config = {
   #   tenancy = module.configuration.tenancy
   #   service = module.configuration.service
