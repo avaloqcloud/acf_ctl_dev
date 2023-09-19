@@ -103,7 +103,7 @@ module "network" {
     description       = module.configuration.oci_core_vcn.segment.description
     cidr_blocks       = module.configuration.oci_core_vcn.segment.cidr_blocks
   }
-  network   = module.configuration.network[each.key]
+  
   # config = {
   #   tenancy = module.configuration.tenancy
   #   service = module.configuration.service
