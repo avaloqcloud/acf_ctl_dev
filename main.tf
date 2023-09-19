@@ -97,11 +97,11 @@ module "network" {
   # providers = {oci = oci.service}
 
   settings = {
-    compartment_id    = module.configuration.oci_core_vcn.segment.compartment_id
-    name              = module.configuration.oci_core_vcn.segment.name
-    description       = module.configuration.oci_core_vcn.segment.description
-    cidr_blocks       = module.configuration.oci_core_vcn.segment.cidr_blocks  }
-  
+    compartment_id    = module.configuration.oci_core_vcn.zone_private.compartment_id
+    name              = module.configuration.oci_core_vcn.zone_private.name
+    description       = module.configuration.oci_core_vcn.zone_private.description
+    cidr_blocks       = module.configuration.oci_core_vcn.zone_private.cidr_blocks
+    
   # config = {
   #   tenancy = module.configuration.tenancy
   #   service = module.configuration.service
