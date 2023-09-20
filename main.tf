@@ -56,11 +56,11 @@ module "network" {
     description       = module.configuration.oci_core_vcn.zone_private.description
     cidr_blocks       = module.configuration.oci_core_vcn.zone_private.cidr_blocks
   }
-  # config = {
-  #   tenancy = module.configuration.tenancy
-  #   service = module.configuration.service
-  #   network = module.configuration.network[each.key]
-  # }
+  config = {
+    tenancy = module.configuration.tenancy
+    service = module.configuration.service
+    network = module.configuration.network[each.key]
+  }
   # assets = {
   #   encryption = module.encryption["main"]
   #   resident   = module.resident
