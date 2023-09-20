@@ -5,60 +5,60 @@
 
 // --- configuration --- //
 module "configuration" {
-  source         = "github.com/avaloqcloud/acf_ctl_config?ref=dev"
-  providers = {oci = oci.home}
+  source    = "github.com/avaloqcloud/acf_ctl_config?ref=dev"
+  providers = { oci = oci.home }
   setting = {
     compartment_id = var.compartment_ocid
     controls = flatten(compact([
       var.cls,
       var.cis == true ? "cis" : "",
       var.pci == true ? "pci" : "",
-      var.c5  == true ? "c5" : ""
+      var.c5 == true ? "c5" : ""
     ]))
-    home           = var.region
-    label    = format(
+    home = var.region
+    label = format(
       "%s%s%s",
       lower(substr(var.org, 0, 3)),
       lower(substr(var.prj, 0, 2)),
       lower(substr(var.stg, 0, 3)),
     )
-    location   = var.loc
-    name       = lower("${var.org}_${var.prj}_${var.stg}")
-    owner      = var.own
-    parent_id  = var.prt
-    services   = local.osn[var.osn]
-    stage      = local.stage[var.stg]
-    source     = var.src
-    scope      = flatten(compact([
-      var.acp    == true ? "acp" : "",
+    location  = var.loc
+    name      = lower("${var.org}_${var.prj}_${var.stg}")
+    owner     = var.own
+    parent_id = var.prt
+    services  = local.osn[var.osn]
+    stage     = local.stage[var.stg]
+    source    = var.src
+    scope = flatten(compact([
+      var.acp == true ? "acp" : "",
       var.client == true ? "client" : "",
-      var.capi   == true ? "capi" : ""
+      var.capi == true ? "capi" : ""
     ]))
     tenancy_id = var.tenancy_ocid
     user_id    = var.current_user_ocid
   }
 }
 output "configuration" {
-  value = {for resource, parameter in module.configuration : resource => parameter}
+  value = { for resource, parameter in module.configuration : resource => parameter }
 }
 // --- configuration --- //
 
 // --- network configuration --- //
 module "network" {
   source     = "github.com/avaloqcloud/acf_res_net?ref=dev"
-  depends_on = [module.configuration]# module.resident] #module.encryption,
+  depends_on = [module.configuration] # module.resident] #module.encryption,
   # providers = {oci = oci.service}
   # for_each  = {for zone in local.zones : zone.name => zone}
 
   settings = {
-    compartment_id    = module.configuration.oci_core_vcn.zone_private.compartment_id
-    name              = module.configuration.oci_core_vcn.zone_private.name
-    description       = module.configuration.oci_core_vcn.zone_private.description
-    cidr_blocks       = module.configuration.oci_core_vcn.zone_private.cidr_blocks
+    compartment_id = module.configuration.oci_core_vcn.zone_private.compartment_id
+    name           = module.configuration.oci_core_vcn.zone_private.name
+    description    = module.configuration.oci_core_vcn.zone_private.description
+    cidr_blocks    = module.configuration.oci_core_vcn.zone_private.cidr_blocks
   }
   config = {
-    tenancy = module.configuration.tenancy
-    service = module.configuration.service
+    tenancy = var.tenancy_ocid
+    service = module.configuration.settings.services
     network = module.configuration.network[each.key]
   }
   # assets = {
@@ -67,7 +67,7 @@ module "network" {
   # }
 }
 output "network" {
-  value = {for resource, parameter in module.network : resource => parameter}
+  value = { for resource, parameter in module.network : resource => parameter }
 }
 // --- network configuration --- //
 

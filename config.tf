@@ -26,25 +26,25 @@ provider "oci" {
 }
 
 data "oci_core_services" "all" {
-    filter {
-        name   = "name"
-        values = ["All .* Services In Oracle Services Network"]
-        regex  = true
-    }
+  filter {
+    name   = "name"
+    values = ["All .* Services In Oracle Services Network"]
+    regex  = true
+  }
 }
 
 data "oci_core_services" "storage" {
-    filter {
-        name   = "name"
-        values = ["OCI .* Object Storage"]
-        regex  = true
-    }
+  filter {
+    name   = "name"
+    values = ["OCI .* Object Storage"]
+    regex  = true
+  }
 }
 
 locals {
-  class = anytrue ([
+  class = anytrue([
     !contains(["FINMA", "BAFIN", "MARS"], var.cls),
-    var.cis, 
+    var.cis,
     var.pci,
     var.c5
   ])

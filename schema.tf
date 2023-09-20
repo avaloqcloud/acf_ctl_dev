@@ -2,24 +2,24 @@
 // Licensed under the Apache 2.0 license shown at https://www.apache.org/licenses/LICENSE-2.0
 
 // Prepopulated Variables 
-variable "tenancy_ocid"      { }
-variable "compartment_ocid"  { }
-variable "region"            { }
-variable "current_user_ocid" { }
+variable "tenancy_ocid" {}
+variable "compartment_ocid" {}
+variable "region" {}
+variable "current_user_ocid" {}
 
 
 // Resident Configuration
 variable "prt" {
-  type = string
+  type        = string
   description = "The Oracle Cloud Identifier (OCID) for a parent compartment, an encapsulating child compartment will be created to define the service resident. Usually this is the root compartment, hence the tenancy OCID."
 }
 
-variable "org" { 
+variable "org" {
   type        = string
   description = "The organization represents an unique identifier for a service owner and triggers the definition of groups on root compartment level"
 }
 
-variable "prj" { 
+variable "prj" {
   type        = string
   description = "The project name represents an unique identifier for a service defined on root compartment level"
 }
@@ -34,7 +34,7 @@ variable "own" {
   description = "The technical owner identifies the main administrator by his or her eMail address"
 }
 
-variable "stg"           { 
+variable "stg" {
   type        = string
   description = "The stage variable triggers lifecycle related resources to be provisioned"
 }
@@ -99,7 +99,7 @@ variable "nat" {
 }
 
 variable "osn" {
-  type = string
+  type        = string
   description = "Configures the scope for the service gateway"
   default     = "ALL"
 }
