@@ -5,7 +5,7 @@
 
 // --- configuration --- //
 module "configuration" {
-  source         = "github.com/avaloqcloud/acf_ctl_config"
+  source         = "github.com/avaloqcloud/acf_ctl_config?ref=dev"
   providers = {oci = oci.home}
   setting = {
     compartment_id = var.compartment_ocid
