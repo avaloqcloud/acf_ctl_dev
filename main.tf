@@ -43,6 +43,34 @@ output "configuration" {
 }
 // --- configuration --- //
 
+// --- network configuration --- //
+module "network" {
+  source     = "github.com/avaloqcloud/acf_res_net?ref=dev"
+  depends_on = [module.configuration]# module.resident] #module.encryption,
+  # providers = {oci = oci.service}
+  # for_each  = {for zone in local.zones : zone.name => zone}
+
+  settings = {
+    compartment_id    = module.configuration.oci_core_vcn.zone_private.compartment_id
+    name              = module.configuration.oci_core_vcn.zone_private.name
+    description       = module.configuration.oci_core_vcn.zone_private.description
+    cidr_blocks       = module.configuration.oci_core_vcn.zone_private.cidr_blocks
+  }
+  # config = {
+  #   tenancy = module.configuration.tenancy
+  #   service = module.configuration.service
+  #   network = module.configuration.network[each.key]
+  # }
+  # assets = {
+  #   encryption = module.encryption["main"]
+  #   resident   = module.resident
+  # }
+}
+output "network" {
+  value = {for resource, parameter in module.network : resource => parameter}
+}
+// --- network configuration --- //
+
 /*/ --- operation controls --- //
 module "resident" {
   source     = "github.com/avaloqcloud/acf_ctl_config"
@@ -89,34 +117,6 @@ output "encryption" {
   sensitive = true
 }
 // --- wallet configuration --- /*/
-
-// --- network configuration --- //
-module "network" {
-  source     = "github.com/avaloqcloud/acf_res_net"
-  depends_on = [module.configuration]# module.resident] #module.encryption,
-  # providers = {oci = oci.service}
-  # for_each  = {for zone in local.zones : zone.name => zone}
-
-  settings = {
-    compartment_id    = module.configuration.oci_core_vcn.zone_private.compartment_id
-    name              = module.configuration.oci_core_vcn.zone_private.name
-    description       = module.configuration.oci_core_vcn.zone_private.description
-    cidr_blocks       = module.configuration.oci_core_vcn.zone_private.cidr_blocks
-  }
-  # config = {
-  #   tenancy = module.configuration.tenancy
-  #   service = module.configuration.service
-  #   network = module.configuration.network[each.key]
-  # }
-  # assets = {
-  #   encryption = module.encryption["main"]
-  #   resident   = module.resident
-  # }
-}
-output "network" {
-  value = {for resource, parameter in module.network : resource => parameter}
-}
-// --- network configuration --- //
 
 /*/ --- database creation --- //
 module "database" {
